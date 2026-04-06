@@ -9,8 +9,6 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "MS Gothic", "Meiryo", sans-serif; font-size: 11px; background: #f0f0f0; }
-  .doc { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='26'%3E%3Ctext x='0' y='13' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.5'%3Etokusuru%3C/text%3E%3Ctext x='31' y='26' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.5'%3Etokusuru%3C/text%3E%3C/svg%3E"); }
-  body.hide-watermark .doc { background-image: none !important; }
 
   /* ツールバー */
   #toolbar {
@@ -400,7 +398,6 @@
   <h1>請求書・領収書</h1>
   <button onclick="printCurrent()">印刷 / PDF</button>
   <button onclick="printBoth()">両方印刷</button>
-  <button id="wm-btn" onclick="toggleWatermark()">背景文字：あり</button>
   <div class="sep"></div>
   <button class="accent inv-only" onclick="generateReceipt()">領収書を自動生成</button>
   <div class="sep inv-only"></div>
