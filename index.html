@@ -402,7 +402,8 @@
   <h1>請求書・領収書</h1>
   <button onclick="printCurrent()">印刷 / PDF</button>
   <button onclick="printBoth()">両方印刷</button>
-  <button id="watermark-btn" onclick="toggleWatermark()">透かし ON</button>
+  <button id="watermark-on-btn" onclick="setWatermark(true)">透かし：あり</button>
+  <button id="watermark-off-btn" onclick="setWatermark(false)" style="opacity:0.5">透かし：なし</button>
   <div class="sep"></div>
   <button class="accent inv-only" onclick="generateReceipt()">領収書を自動生成</button>
   <div class="sep inv-only"></div>
@@ -969,11 +970,10 @@ function switchTab(name) {
 
 function printCurrent() { doPrint(currentTab === 'invoice' ? 'invoice' : 'receipt'); }
 
-function toggleWatermark() {
-  const on = document.body.classList.toggle('watermark-on');
-  const btn = document.getElementById('watermark-btn');
-  btn.textContent = on ? '透かし：あり' : '透かし：なし';
-  btn.style.opacity = on ? '1' : '0.5';
+function setWatermark(on) {
+  document.body.classList.toggle('watermark-on', on);
+  document.getElementById('watermark-on-btn').style.opacity  = on ? '1' : '0.5';
+  document.getElementById('watermark-off-btn').style.opacity = on ? '0.5' : '1';
   localStorage.setItem('watermark_on', on ? '1' : '');
 }
 
@@ -982,12 +982,7 @@ window.onload = function() {
   for (let i = 0; i < 17; i++) addRow();
   for (let i = 0; i < 8; i++) addR2Row();
   loadData();
-  if (localStorage.getItem('watermark_on')) {
-    document.body.classList.add('watermark-on');
-    const btn = document.getElementById('watermark-btn');
-    btn.textContent = '透かし：あり';
-    btn.style.opacity = '1';
-  }
+  setWatermark(!!localStorage.getItem('watermark_on'));
   const savedStamp = localStorage.getItem('stamp_img');
   if (savedStamp) setStamp(savedStamp);
   setTodayDate();
