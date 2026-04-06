@@ -372,6 +372,12 @@
     #receipt-doc-2 { min-height: 297mm !important; padding: 30px 40px !important; }
     .design-toggle { display: none !important; }
 
+    /* 1ページに収める */
+    #invoice, #receipt-doc, #receipt-doc-2 {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+
     /* 共通 */
     .f { background: transparent !important; border-bottom: 1px solid #ccc; }
     .add-row-btn { display: none !important; }
@@ -1339,8 +1345,9 @@ function doPrint(mode) {
   if (mode === 'both') {
     inv.style.setProperty('display', 'block', 'important');
     rec.style.setProperty('display', 'block', 'important');
-    inv.style.pageBreakAfter = 'always';
-    void recDoc.offsetHeight; // レイアウト強制再計算
+    invDoc.style.setProperty('page-break-after', 'always', 'important');
+    invDoc.style.setProperty('break-after', 'page', 'important');
+    void recDoc.offsetHeight;
   } else if (mode === 'invoice') {
     inv.style.setProperty('display', 'block', 'important');
     rec.style.setProperty('display', 'none',  'important');
@@ -1350,11 +1357,17 @@ function doPrint(mode) {
     void recDoc.offsetHeight;
   }
 
-  window.print();
+  function restore() {
+    invDoc.style.pageBreakAfter = '';
+    invDoc.style.breakAfter = '';
+    inv.style.cssText = '';
+    rec.style.cssText = '';
+    switchTab(currentTab);
+    window.removeEventListener('afterprint', restore);
+  }
+  window.addEventListener('afterprint', restore);
 
-  inv.style.cssText = '';
-  rec.style.cssText = '';
-  switchTab(currentTab);
+  setTimeout(() => window.print(), 300);
 }
 
 function printBoth() { doPrint('both'); }
