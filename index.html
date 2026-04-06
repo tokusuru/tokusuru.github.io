@@ -9,28 +9,6 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "MS Gothic", "Meiryo", sans-serif; font-size: 11px; background: #f0f0f0; }
-  .doc { position: relative; overflow: hidden; }
-  .watermark-overlay {
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: rotate(-30deg);
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 30px 20px;
-    padding: 20px;
-    overflow: hidden;
-  }
-  .watermark-overlay span {
-    font-size: 18px;
-    color: rgba(150, 150, 150, 0.35);
-    font-family: Arial, sans-serif;
-    white-space: nowrap;
-    letter-spacing: 2px;
-  }
 
   /* ツールバー */
   #toolbar {
@@ -418,7 +396,6 @@
   <h1>請求書・領収書</h1>
   <button onclick="printCurrent()">印刷 / PDF</button>
   <button onclick="printBoth()">両方印刷</button>
-  <button id="watermark-btn" onclick="toggleWatermark()">文字あり</button>
   <div class="sep"></div>
   <button class="accent inv-only" onclick="generateReceipt()">領収書を自動生成</button>
   <div class="sep inv-only"></div>
