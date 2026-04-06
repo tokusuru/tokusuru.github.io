@@ -377,6 +377,15 @@
       break-inside: avoid !important;
     }
 
+    /* 携帯のみ：縮小して1ページに収める */
+    body.mobile-print #invoice {
+      zoom: 0.6 !important;
+    }
+    body.mobile-print #receipt-doc,
+    body.mobile-print #receipt-doc-2 {
+      zoom: 0.65 !important;
+    }
+
     /* 共通 */
     .f { background: transparent !important; border-bottom: 1px solid #ccc; }
     .add-row-btn { display: none !important; }
@@ -1340,6 +1349,9 @@ function doPrint(mode) {
   const rec    = document.getElementById('tab-receipt');
   const invDoc = document.getElementById('invoice');
   const recDoc = document.getElementById([2,4].includes(currentReceiptDesign) ? 'receipt-doc-2' : 'receipt-doc');
+  const isMobile = window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
+
+  if (isMobile) document.body.classList.add('mobile-print');
 
   if (mode === 'both') {
     inv.style.setProperty('display', 'block', 'important');
@@ -1357,6 +1369,7 @@ function doPrint(mode) {
   }
 
   function restore() {
+    document.body.classList.remove('mobile-print');
     invDoc.style.pageBreakAfter = '';
     invDoc.style.breakAfter = '';
     inv.style.cssText = '';
