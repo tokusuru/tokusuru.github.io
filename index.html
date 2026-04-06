@@ -404,7 +404,7 @@
   <h1>請求書・領収書</h1>
   <button onclick="printCurrent()">印刷 / PDF</button>
   <button onclick="printBoth()">両方印刷</button>
-  <button id="watermark-btn" onclick="toggleWatermark()">文字なし</button>
+  <button id="watermark-btn" onclick="toggleWatermark()">文字あり</button>
   <div class="sep"></div>
   <button class="accent inv-only" onclick="generateReceipt()">領収書を自動生成</button>
   <div class="sep inv-only"></div>
@@ -971,19 +971,27 @@ function switchTab(name) {
 
 function printCurrent() { doPrint(currentTab === 'invoice' ? 'invoice' : 'receipt'); }
 
-function toggleWatermark() {
-  const on = !document.querySelector('.watermark-overlay');
+function addWatermarks() {
   document.querySelectorAll('.doc').forEach(doc => {
-    if (on) {
+    if (!doc.querySelector('.watermark-overlay')) {
       const el = document.createElement('div');
       el.className = 'watermark-overlay';
       doc.appendChild(el);
-    } else {
-      doc.querySelectorAll('.watermark-overlay').forEach(e => e.remove());
     }
   });
-  document.getElementById('watermark-btn').textContent = on ? '文字あり' : '文字なし';
-  localStorage.setItem('watermark_on', on ? '1' : '');
+}
+
+function toggleWatermark() {
+  const hasWatermark = !!document.querySelector('.watermark-overlay');
+  if (hasWatermark) {
+    document.querySelectorAll('.watermark-overlay').forEach(e => e.remove());
+    document.getElementById('watermark-btn').textContent = '文字なし';
+    localStorage.setItem('watermark_hidden', '1');
+  } else {
+    addWatermarks();
+    document.getElementById('watermark-btn').textContent = '文字あり';
+    localStorage.removeItem('watermark_hidden');
+  }
 }
 
 // ===== 初期化 =====
@@ -991,7 +999,11 @@ window.onload = function() {
   for (let i = 0; i < 17; i++) addRow();
   for (let i = 0; i < 8; i++) addR2Row();
   loadData();
-  if (localStorage.getItem('watermark_on')) toggleWatermark();
+  if (localStorage.getItem('watermark_hidden')) {
+    document.getElementById('watermark-btn').textContent = '文字なし';
+  } else {
+    addWatermarks();
+  }
   const savedStamp = localStorage.getItem('stamp_img');
   if (savedStamp) setStamp(savedStamp);
   setTodayDate();
