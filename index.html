@@ -377,10 +377,6 @@
       break-inside: avoid !important;
     }
 
-    /* 携帯のみ：縮小して1ページに収める */
-    body.mobile-print {
-      zoom: 0.55 !important;
-    }
 
     /* 共通 */
     .f { background: transparent !important; border-bottom: 1px solid #ccc; }
@@ -1347,8 +1343,6 @@ function doPrint(mode) {
   const recDoc = document.getElementById([2,4].includes(currentReceiptDesign) ? 'receipt-doc-2' : 'receipt-doc');
   const isMobile = window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
 
-  if (isMobile) document.body.classList.add('mobile-print');
-
   if (mode === 'both') {
     inv.style.setProperty('display', 'block', 'important');
     rec.style.setProperty('display', 'block', 'important');
@@ -1364,8 +1358,14 @@ function doPrint(mode) {
     void recDoc.offsetHeight;
   }
 
+  if (isMobile) {
+    invDoc.style.zoom = '0.55';
+    recDoc.style.zoom = '0.6';
+  }
+
   function restore() {
-    document.body.classList.remove('mobile-print');
+    invDoc.style.zoom = '';
+    recDoc.style.zoom = '';
     invDoc.style.pageBreakAfter = '';
     invDoc.style.breakAfter = '';
     inv.style.cssText = '';
