@@ -9,8 +9,13 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "MS Gothic", "Meiryo", sans-serif; font-size: 11px; background: #f0f0f0; }
-  body.watermark-on .doc {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='26'%3E%3Ctext x='0' y='13' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.4'%3Etokusuru%3C/text%3E%3Ctext x='31' y='26' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.4'%3Etokusuru%3C/text%3E%3C/svg%3E");
+  .doc { position: relative; }
+  .watermark-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ctext x='10' y='40' font-family='Arial' font-size='13' fill='%23aaaaaa' fill-opacity='0.35' transform='rotate(-30 40 40)'%3Etokusuru%3C/text%3E%3C/svg%3E");
   }
 
   /* ツールバー */
@@ -352,9 +357,6 @@
       background-color: white;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-    }
-    body.watermark-on .doc {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='26'%3E%3Ctext x='0' y='13' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.2'%3Etokusuru%3C/text%3E%3Ctext x='31' y='26' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.2'%3Etokusuru%3C/text%3E%3C/svg%3E");
     }
     #toolbar, #tabs, .modal-overlay, datalist { display: none !important; }
     .doc-wrapper { padding: 0 !important; margin: 0 !important; }
@@ -970,9 +972,17 @@ function switchTab(name) {
 function printCurrent() { doPrint(currentTab === 'invoice' ? 'invoice' : 'receipt'); }
 
 function toggleWatermark() {
-  const on = document.body.classList.toggle('watermark-on');
-  const btn = document.getElementById('watermark-btn');
-  btn.textContent = on ? '文字あり' : '文字なし';
+  const on = !document.querySelector('.watermark-overlay');
+  document.querySelectorAll('.doc').forEach(doc => {
+    if (on) {
+      const el = document.createElement('div');
+      el.className = 'watermark-overlay';
+      doc.appendChild(el);
+    } else {
+      doc.querySelectorAll('.watermark-overlay').forEach(e => e.remove());
+    }
+  });
+  document.getElementById('watermark-btn').textContent = on ? '文字あり' : '文字なし';
   localStorage.setItem('watermark_on', on ? '1' : '');
 }
 
@@ -981,10 +991,7 @@ window.onload = function() {
   for (let i = 0; i < 17; i++) addRow();
   for (let i = 0; i < 8; i++) addR2Row();
   loadData();
-  if (localStorage.getItem('watermark_on')) {
-    document.body.classList.add('watermark-on');
-    document.getElementById('watermark-btn').textContent = '文字あり';
-  }
+  if (localStorage.getItem('watermark_on')) toggleWatermark();
   const savedStamp = localStorage.getItem('stamp_img');
   if (savedStamp) setStamp(savedStamp);
   setTodayDate();
