@@ -386,6 +386,7 @@
     .stamp-ph { display: none !important; }
     .stamp-wrap.has-image .stamp-img { display: block !important; }
     #r-amount { border-bottom: 2px solid #333; }
+    body.no-watermark { background-image: none !important; }
   }
 </style>
 </head>
@@ -396,6 +397,7 @@
   <h1>請求書・領収書</h1>
   <button onclick="printCurrent()">印刷 / PDF</button>
   <button onclick="printBoth()">両方印刷</button>
+  <button id="watermark-btn" onclick="toggleWatermark()">透かし ON</button>
   <div class="sep"></div>
   <button class="accent inv-only" onclick="generateReceipt()">領収書を自動生成</button>
   <div class="sep inv-only"></div>
@@ -962,11 +964,21 @@ function switchTab(name) {
 
 function printCurrent() { doPrint(currentTab === 'invoice' ? 'invoice' : 'receipt'); }
 
+function toggleWatermark() {
+  const on = document.body.classList.toggle('no-watermark');
+  document.getElementById('watermark-btn').textContent = on ? '透かし OFF' : '透かし ON';
+  localStorage.setItem('watermark_off', on ? '1' : '');
+}
+
 // ===== 初期化 =====
 window.onload = function() {
   for (let i = 0; i < 17; i++) addRow();
   for (let i = 0; i < 8; i++) addR2Row();
   loadData();
+  if (localStorage.getItem('watermark_off')) {
+    document.body.classList.add('no-watermark');
+    document.getElementById('watermark-btn').textContent = '透かし OFF';
+  }
   const savedStamp = localStorage.getItem('stamp_img');
   if (savedStamp) setStamp(savedStamp);
   setTodayDate();
