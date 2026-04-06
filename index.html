@@ -1358,24 +1358,11 @@ function doPrint(mode) {
     void recDoc.offsetHeight;
   }
 
-  if (isMobile) {
-    const applyScale = (el, scale) => {
-      el.style.transform = `scale(${scale})`;
-      el.style.transformOrigin = 'top left';
-      el.style.width = (100 / scale) + '%';
-      el.style.marginBottom = `-${el.offsetHeight * (1 - scale)}px`;
-    };
-    applyScale(invDoc, 0.55);
-    applyScale(recDoc, 0.6);
-  }
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (isMobile && viewport) viewport.content = 'width=800';
 
   function restore() {
-    [invDoc, recDoc].forEach(el => {
-      el.style.transform = '';
-      el.style.transformOrigin = '';
-      el.style.width = '';
-      el.style.marginBottom = '';
-    });
+    if (isMobile && viewport) viewport.content = 'width=device-width, initial-scale=1.0';
     invDoc.style.pageBreakAfter = '';
     invDoc.style.breakAfter = '';
     inv.style.cssText = '';
