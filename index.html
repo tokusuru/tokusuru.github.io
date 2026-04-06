@@ -1073,12 +1073,9 @@ function setTodayDate() {
   // 保存データがない場合だけ今日の日付をセット
   const issueDate = document.getElementById('issue-date');
   if (!issueDate.value) issueDate.value = `${y}/${m}/${d}`;
-  const rYear  = document.getElementById('r-year');
-  const rMonth = document.getElementById('r-month');
-  const rDay   = document.getElementById('r-day');
-  if (!rYear.value)  rYear.value  = y;
-  if (!rMonth.value) rMonth.value = m;
-  if (!rDay.value)   rDay.value   = d;
+  document.getElementById('r-year').value  = y;
+  document.getElementById('r-month').value = m;
+  document.getElementById('r-day').value   = d;
 }
 
 // ===== 明細行 =====
