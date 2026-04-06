@@ -472,7 +472,7 @@
       <div class="inv-title">請　求　書</div>
       <div class="date-row">
         <span class="date-label">発行日</span>
-        <input class="f" id="issue-date" type="text" placeholder="例：2025/12/1">
+        <input class="f" id="issue-date" type="text" placeholder="例：2025/12/1" oninput="syncReceiptDate()">
       </div>
       <div id="message-area">
         <div>平素は格別のご愛顧を賜り厚くお礼申し上げます。</div>
@@ -1054,6 +1054,15 @@ function cyclePaymentDate() {
   document.getElementById('payment-date').value = `${y}年${mo}月${d}日`;
   paymentCycleIndex = (paymentCycleIndex + 1) % paymentCycleOptions.length;
   document.getElementById('payment-cycle-btn').textContent = `支払期限：${paymentCycleOptions[paymentCycleIndex]}`;
+}
+
+function syncReceiptDate() {
+  const val = document.getElementById('issue-date').value;
+  const m = val.match(/(\d+)[\/年](\d+)[月\/](\d+)/);
+  if (!m) return;
+  document.getElementById('r-year').value  = m[1];
+  document.getElementById('r-month').value = m[2];
+  document.getElementById('r-day').value   = m[3];
 }
 
 function setTodayDate() {
