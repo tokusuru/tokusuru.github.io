@@ -1004,15 +1004,6 @@ window.onload = function() {
   for (let i = 0; i < 17; i++) addRow();
   for (let i = 0; i < 8; i++) addR2Row();
   loadData();
-  if (localStorage.getItem('hide-watermark')) {
-    document.body.classList.add('hide-watermark');
-    document.getElementById('wm-btn').textContent = '背景文字：なし';
-  }
-  if (localStorage.getItem('watermark_hidden')) {
-    document.getElementById('watermark-btn').textContent = '文字なし';
-  } else {
-    addWatermarks();
-  }
   const savedStamp = localStorage.getItem('stamp_img');
   if (savedStamp) setStamp(savedStamp);
   setTodayDate();
