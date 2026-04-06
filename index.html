@@ -1359,13 +1359,23 @@ function doPrint(mode) {
   }
 
   if (isMobile) {
-    invDoc.style.zoom = '0.55';
-    recDoc.style.zoom = '0.6';
+    const applyScale = (el, scale) => {
+      el.style.transform = `scale(${scale})`;
+      el.style.transformOrigin = 'top left';
+      el.style.width = (100 / scale) + '%';
+      el.style.marginBottom = `-${el.offsetHeight * (1 - scale)}px`;
+    };
+    applyScale(invDoc, 0.55);
+    applyScale(recDoc, 0.6);
   }
 
   function restore() {
-    invDoc.style.zoom = '';
-    recDoc.style.zoom = '';
+    [invDoc, recDoc].forEach(el => {
+      el.style.transform = '';
+      el.style.transformOrigin = '';
+      el.style.width = '';
+      el.style.marginBottom = '';
+    });
     invDoc.style.pageBreakAfter = '';
     invDoc.style.breakAfter = '';
     inv.style.cssText = '';
