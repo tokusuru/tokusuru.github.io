@@ -350,6 +350,9 @@
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
+    body:not(.hide-watermark) .doc {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='62' height='26'%3E%3Ctext x='0' y='13' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.2'%3Etokusuru%3C/text%3E%3Ctext x='31' y='26' font-family='Arial' font-size='11' fill='%23b0b0b0' fill-opacity='0.2'%3Etokusuru%3C/text%3E%3C/svg%3E");
+    }
     #toolbar, #tabs, .modal-overlay, datalist { display: none !important; }
     .doc-wrapper { padding: 0 !important; margin: 0 !important; }
     .doc { border: none; width: 100%; margin: 0 !important; }
@@ -396,6 +399,7 @@
   <h1>請求書・領収書</h1>
   <button onclick="printCurrent()">印刷 / PDF</button>
   <button onclick="printBoth()">両方印刷</button>
+  <button id="wm-btn" onclick="toggleWatermark()">背景文字：あり</button>
   <div class="sep"></div>
   <button class="accent inv-only" onclick="generateReceipt()">領収書を自動生成</button>
   <div class="sep inv-only"></div>
@@ -962,6 +966,12 @@ function switchTab(name) {
 
 function printCurrent() { doPrint(currentTab === 'invoice' ? 'invoice' : 'receipt'); }
 
+function toggleWatermark() {
+  const hide = document.body.classList.toggle('hide-watermark');
+  document.getElementById('wm-btn').textContent = hide ? '背景文字：なし' : '背景文字：あり';
+  localStorage.setItem('hide-watermark', hide ? '1' : '');
+}
+
 function addWatermarks() {
   document.querySelectorAll('.doc').forEach(doc => {
     if (!doc.querySelector('.watermark-overlay')) {
@@ -995,6 +1005,10 @@ window.onload = function() {
   for (let i = 0; i < 17; i++) addRow();
   for (let i = 0; i < 8; i++) addR2Row();
   loadData();
+  if (localStorage.getItem('hide-watermark')) {
+    document.body.classList.add('hide-watermark');
+    document.getElementById('wm-btn').textContent = '背景文字：なし';
+  }
   if (localStorage.getItem('watermark_hidden')) {
     document.getElementById('watermark-btn').textContent = '文字なし';
   } else {
