@@ -1071,8 +1071,7 @@ function setTodayDate() {
   const m = today.getMonth() + 1;
   const d = today.getDate();
   // 保存データがない場合だけ今日の日付をセット
-  const issueDate = document.getElementById('issue-date');
-  if (!issueDate.value) issueDate.value = `${y}/${m}/${d}`;
+  document.getElementById('issue-date').value = `${y}/${m}/${d}`;
   document.getElementById('r-year').value  = y;
   document.getElementById('r-month').value = m;
   document.getElementById('r-day').value   = d;
