@@ -965,9 +965,11 @@ function switchTab(name) {
 function printCurrent() { doPrint(currentTab === 'invoice' ? 'invoice' : 'receipt'); }
 
 function toggleWatermark() {
-  const on = document.body.classList.toggle('no-watermark');
-  document.getElementById('watermark-btn').textContent = on ? '透かし OFF' : '透かし ON';
-  localStorage.setItem('watermark_off', on ? '1' : '');
+  const off = document.body.classList.toggle('no-watermark');
+  const btn = document.getElementById('watermark-btn');
+  btn.textContent = off ? '透かし：なし' : '透かし：あり';
+  btn.style.opacity = off ? '0.5' : '1';
+  localStorage.setItem('watermark_off', off ? '1' : '');
 }
 
 // ===== 初期化 =====
@@ -977,7 +979,9 @@ window.onload = function() {
   loadData();
   if (localStorage.getItem('watermark_off')) {
     document.body.classList.add('no-watermark');
-    document.getElementById('watermark-btn').textContent = '透かし OFF';
+    const btn = document.getElementById('watermark-btn');
+    btn.textContent = '透かし：なし';
+    btn.style.opacity = '0.5';
   }
   const savedStamp = localStorage.getItem('stamp_img');
   if (savedStamp) setStamp(savedStamp);
