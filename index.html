@@ -1359,10 +1359,18 @@ function doPrint(mode) {
   }
 
   const viewport = document.querySelector('meta[name="viewport"]');
-  if (isMobile && viewport) viewport.content = 'width=800';
+  if (isMobile && viewport) {
+    viewport.content = 'width=800';
+    invDoc.style.zoom = '0.78';
+    recDoc.style.zoom = '0.78';
+  }
 
   function restore() {
-    if (isMobile && viewport) viewport.content = 'width=device-width, initial-scale=1.0';
+    if (isMobile && viewport) {
+      viewport.content = 'width=device-width, initial-scale=1.0';
+      invDoc.style.zoom = '';
+      recDoc.style.zoom = '';
+    }
     invDoc.style.pageBreakAfter = '';
     invDoc.style.breakAfter = '';
     inv.style.cssText = '';
