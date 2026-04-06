@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>請求書・領収書作成</title>
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
@@ -16,10 +17,10 @@
     display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
     position: sticky; top: 0; z-index: 100;
   }
-  #toolbar h1 { font-size: 16px; margin-right: 6px; }
+  #toolbar h1 { font-size: 16px; margin-right: 6px; font-family: 'Yuji Syuku', serif; }
   #toolbar button {
     background: #27ae60; color: white; border: none; padding: 8px 18px;
-    border-radius: 4px; cursor: pointer; font-size: 13px; font-family: "Meiryo", sans-serif;
+    border-radius: 4px; cursor: pointer; font-size: 13px; font-family: 'Yuji Syuku', serif;
   }
   #toolbar button:hover { background: #219a52; }
   #toolbar button.secondary { background: #7f8c8d; }
@@ -33,7 +34,7 @@
   #tabs { display: flex; background: #34495e; }
   .tab-btn {
     padding: 10px 30px; color: #bdc3c7; cursor: pointer; font-size: 13px;
-    font-family: "Meiryo", sans-serif; border: none; background: none;
+    font-family: 'Yuji Syuku', serif; border: none; background: none;
     border-bottom: 3px solid transparent; transition: all 0.2s;
   }
   .tab-btn:hover { color: white; }
